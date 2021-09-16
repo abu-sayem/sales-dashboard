@@ -3,7 +3,10 @@ package controllers
 import (
 	"salesdashboard/database"
 	"salesdashboard/models"
+	"strconv"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -58,6 +61,16 @@ func Register(c *fiber.Ctx) error {
 				"message": "Incorrect password",
 			})
 		}
+		claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+			Issuer: strconv.Itoa(int(user.Id)),
+			ExpiresAt: time.Now().Add(time.Hour*24).Unix(),
+		})
+		token, err := claims.SignedString(([]byte("secret")))
 
-		return c.JSON(&user)
+		if err != nil {
+			return c.SendStatus(fiber.StatusInternalServerError)
+		}
+
+
+		return c.JSON(token)
 	}

@@ -33,7 +33,7 @@ func Register(c *fiber.Ctx) error {
 	user.SetPassword(data["password"])
 
 	database.DB.Create(&user)
-		return c.JSON(user)
+	return c.JSON(user)
 	}
 
 

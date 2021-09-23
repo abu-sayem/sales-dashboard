@@ -33,4 +33,10 @@ func Setup(app *fiber.App) {
 
 	app.Get("api/permissions", controllers.AllPermissions)
 	app.Post("api/permissions", controllers.CreatePermissions)
+
+	app.Get("api/products", controllers.AllProduct)
+	app.Post("api/products", controllers.CreateProduct)
+	app.Get("api/products/:id", controllers.GeteProduct)
+	app.Put("api/products/:id", controllers.UpdateProduct)
+	app.Delete("api/products/:id", controllers.DeleteProduct)
 }

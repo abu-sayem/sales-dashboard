@@ -1,13 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+
+import RegisterComponent from "../../components/RegisterComponent";
 
 export class Register extends Component {
   render() {
-    return (
-      <div>
-        Hello
-      </div>
-    )
+    return <RegisterComponent />;
   }
 }
 
-export default Register
+export default Register;

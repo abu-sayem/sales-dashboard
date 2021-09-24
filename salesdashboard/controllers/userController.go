@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"math"
 	"salesdashboard/database"
 	"salesdashboard/models"
 	"strconv"
@@ -10,24 +9,9 @@ import (
 )
 
 func AllUser(c *fiber.Ctx) error {
-		var users []models.User
-
-		limit := 1
 		page, _ := strconv.Atoi(c.Query("page", "1"))
-		offset := (page - 1) * limit
-		var total int64
 
-		database.DB.Preload("Role").Offset(offset).Limit(limit).Find(&users)
-		database.DB.Model(&models.User{}).Count(&total)
-
-		return c.JSON(fiber.Map{
-			"data": users,
-			"meta": fiber.Map{
-				"total": total,
-				"page": page,
-				"last_page": math.Ceil(float64(total) / float64(limit)),
-			},
-		})
+		return c.JSON(models.Paginate(database.DB, &models.User{}, page))
 	}
 
 

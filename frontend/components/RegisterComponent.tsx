@@ -1,29 +1,45 @@
-import React, { Component, SyntheticEvent } from 'react'
-
-import axios from 'axios';
+import React, { Component, SyntheticEvent } from "react";
+import { withRouter } from "next/router";
+import { WithRouterProps } from "next/dist/client/with-router";
+import axios from "axios";
 
 import "./Login.module.css";
+import { route } from "next/dist/server/router";
+import { redirect } from "next/dist/server/api-utils";
 
-export class Register extends Component {
-    first_name = 'zZ';
-    last_name = ";";
-    password = "";
-    email = "";
-    password_confirm = "";
+class Register extends Component<WithRouterProps> {
+  first_name = "zZ";
+  last_name = ";";
+  password = "";
+  email = "";
+  password_confirm = "";
 
-    submit = async (e:SyntheticEvent) => {
-      e.preventDefault();
-        const response = await axios.post('http://localhost:8000/api/register', {
-          first_name: this.first_name,
-          last_name: this.last_name,
-          password: this.password,
-          email: this.email,
-          password_confirm:this.password_confirm,
-        });
-        console.log(response.data);
-    }
+  state = {
+    redirect: false,
+  };
+
+  submit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    await axios.post("http://localhost:8000/api/register", {
+      first_name: this.first_name,
+      last_name: this.last_name,
+      password: this.password,
+      email: this.email,
+      password_confirm: this.password_confirm,
+    });
+
+    this.setState({
+      redirect: true,
+    });
+  };
 
   render() {
+    const { router } = this.props;
+
+    if (this.state.redirect) {
+      router.push("/");
+    }
+
     return (
       <main className="form-signin d-flex align-items-center justify-content-center my-auto">
         <form onSubmit={this.submit}>
@@ -78,4 +94,4 @@ export class Register extends Component {
   }
 }
 
-export default Register
+export default withRouter(Register);

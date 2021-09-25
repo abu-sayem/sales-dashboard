@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Menu = () => {
+  const router = useRouter();
   return (
     <nav
       id="sidebarMenu"
@@ -10,10 +12,22 @@ const Menu = () => {
         <ul className="nav flex-column">
           <li className="nav-item">
             <Link href="/dashboard">
-              <a className="nav-link active">Dashboard</a>
+              <a
+                className={`nav-link ${
+                  router.pathname == "/dashboard" ? "active" : ""
+                }`}
+              >
+                Dashboard
+              </a>
             </Link>
             <Link href="/users">
-              <a className="nav-link active">Users</a>
+              <a
+                className={`nav-link ${
+                  router.pathname == "/users" ? "active" : ""
+                }`}
+              >
+                Users
+              </a>
             </Link>
           </li>
         </ul>
